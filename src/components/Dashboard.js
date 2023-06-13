@@ -1,15 +1,38 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { DialogCell } from "./DialogCell";
 
 export const Dashboard = () => {
-    //const [file, setFile] = useState();
-    //const [csvOutput, setCsvOutput] = useState();
     const [columnDefs, setColumnDefs] = useState();
     const [rowData, setRowData] = useState();
     const fileReader = new FileReader();
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogValue, setDialogValue] = useState();
+
+    const handleClose = () => {
+        setDialogOpen(false);
+    };
+
+    const gridOptions = {
+        onCellClicked: (event) => {
+            setDialogOpen(true)
+            setDialogValue(event.value)
+        }
+    }
+
+    const defaultColDef = useMemo(() => {
+        return {
+            flex: 1,
+            minWidth: 150,
+            filter: 'agTextColumnFilter',
+            menuTabs: ['filterMenuTab'],
+            sortable: true,
+            resizable: true,
+        };
+    }, []);
 
     const handleOnChange = (e) => {
         const file = e.target.files[0];
@@ -27,17 +50,18 @@ export const Dashboard = () => {
 
     const extractColDefs = (firstRow) => {
         let colDefsArr = firstRow.split(",")
-        colDefsArr = colDefsArr.map(col => {
+        colDefsArr = colDefsArr.map((col, index) => {
             return { field: col }
         })
 
+        //console.log(colDefsArr);
         setColumnDefs(colDefsArr)
     }
 
     const extractRowData = (headers, lines) => {
         var result = [];
         headers = headers.split(",");
-        console.log(headers);
+        //console.log(headers);
 
         for (var i = 1; i < lines.length; i++) {
             var obj = {};
@@ -53,13 +77,19 @@ export const Dashboard = () => {
 
     return (
         <div style={{ margin: '80px' }}>
+            { dialogOpen && <DialogCell open={dialogOpen} data={dialogValue} handleClose={handleClose}/> }
             <h1>CSV IMPORT</h1>
             <form>
                 <input type={"file"} accept={".csv"} onChange={handleOnChange} />
             </form>
 
             <div className="ag-theme-alpine" style={{ height: 400, minWidth: 600, marginTop: '30px' }}>
-                <AgGridReact rowData={rowData} columnDefs={columnDefs} />
+                <AgGridReact
+                    rowData={rowData} 
+                    columnDefs={columnDefs} 
+                    defaultColDef={defaultColDef}
+                    gridOptions={gridOptions}
+                ></AgGridReact>
             </div>
         </div>
     )
