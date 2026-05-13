@@ -1,52 +1,70 @@
-# GenericSearchEngine
+# Generic Search Engine
 
-GenericSearchEngine is a React app for exploring CSV files in a searchable grid.
+Generic Search Engine is a React-based web application for loading CSV files into an interactive data grid, searching records instantly, and exporting filtered results.
 
-## Features
+**Live site:** https://nadavweisler.github.io/GenericSearchEngine/
 
-- Upload local CSV files
+## Overview
+
+The application helps users inspect CSV datasets directly in the browser without a backend service. It is designed for quick ad-hoc analysis, combining structured column filtering with a global search experience.
+
+## Key capabilities
+
+- Import local CSV files from the browser
 - Parse quoted values and ignore blank rows safely
-- Detect text, number, and date columns for better filtering
-- Search across imported rows with a global search box
-- Preview large cell values in a dialog
-- Download the filtered grid as CSV
+- Infer column types to improve filtering behavior
+- Search across all imported rows with a global search box
+- Open large cell values in a dialog for easier inspection
+- Export the filtered dataset back to CSV
+
+## Live deployment
+
+The project is configured for deployment to GitHub Pages:
+
+- Production URL: https://nadavweisler.github.io/GenericSearchEngine/
+- Deployment source: GitHub Actions workflow in `.github/workflows/deploy-pages.yml`
 
 ## Getting started
 
-Install dependencies:
+### Prerequisites
+
+- Node.js 18+
+- npm
+
+### Install dependencies
 
 ```bash
 npm ci --legacy-peer-deps
 ```
 
-Start the development server:
+### Run locally
 
 ```bash
 npm start
 ```
 
-Create a production build:
-
-```bash
-npm run build
-```
-
-Run the test suite:
+### Run tests
 
 ```bash
 CI=true npm test -- --watchAll=false
 ```
 
-## Usage
+### Create a production build
+
+```bash
+npm run build
+```
+
+## How to use
 
 1. Upload a `.csv` file.
 2. Review the import summary and any warnings.
-3. Use the global search box or the grid column filters to narrow results.
-4. Click any cell to inspect long values.
-5. Download the filtered result set if needed.
+3. Use the search box or per-column filters to narrow the dataset.
+4. Select a cell to inspect full content in a dialog.
+5. Export the filtered rows when needed.
 
-## Known limitations
+## Technical notes
 
-- The app expects the first non-empty CSV row to contain headers.
-- Large files are loaded fully in the browser before rendering.
-- Date detection supports common ISO and slash-delimited date formats.
+- The first non-empty CSV row is treated as the header row.
+- Files are processed fully in the browser before rendering.
+- Date detection supports common ISO and slash-delimited formats.
