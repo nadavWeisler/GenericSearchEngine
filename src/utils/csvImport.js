@@ -131,7 +131,7 @@ export const buildColumnDefs = (headers, rows) =>
 
 export const validateCsvFile = (file) => {
   if (!file) {
-    return "Select a CSV file to import.";
+    return "No file was selected.";
   }
 
   const lowerCaseName = file.name?.toLowerCase() ?? "";

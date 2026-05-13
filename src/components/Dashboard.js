@@ -131,7 +131,7 @@ export const Dashboard = () => {
     onCellClicked: (event) => {
       setDialogState({
         open: true,
-        value: event.value ?? "No value",
+        value: event.value ?? "",
       });
     },
   };
