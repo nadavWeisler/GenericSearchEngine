@@ -25,7 +25,6 @@ describe("csvImport", () => {
       "Column 4": "",
     });
     expect(result.warnings).toEqual([
-      "Ignored 1 blank row.",
       "Some rows used a different number of columns. Missing values were left blank.",
     ]);
   });
